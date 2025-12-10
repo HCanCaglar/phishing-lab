@@ -34,17 +34,17 @@ def log(eventType, classification, ip, userAgent, path):
         f.write(json.dumps(log) + "\n")
     print(log)
 
-@app.route("/track.png")
+@app.route("/logo.png")
 def track():
-    userAgent = request.headers.get("User Agent", "")
+    userAgent = request.headers.get("User-Agent", "")
     ip = request.remote_addr
     classification = classify(userAgent)
-    log("open", classification, ip, userAgent, "/track.png")
+    log("open", classification, ip, userAgent, "/logo.png")
     return send_file("pixel.gif", mimetype="image/gif")
 
 @app.route("/click")
 def click():
-    userAgent = request.headers.get("User Agent", "")
+    userAgent = request.headers.get("User-Agent", "")
     ip = request.remote_addr
     classification = classify(userAgent)
     log("click", classification, ip, userAgent, "/click")
@@ -53,3 +53,6 @@ def click():
 @app.route("/")
 def home():
     return "Pixel Tracker is running"
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
